@@ -1,6 +1,5 @@
 package com.pragma.reporte_service.infrastructure.security.config;
 
-import com.pragma.reporte_service.domain.model.RoleNames;
 import com.pragma.reporte_service.infrastructure.security.handler.JsonAccessDeniedHandler;
 import com.pragma.reporte_service.infrastructure.security.handler.JsonAuthenticationEntryPoint;
 import com.pragma.reporte_service.infrastructure.security.jwt.JwtProvider;
@@ -19,6 +18,9 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfiguration {
+
+    private static final String ADMIN = "ADMINISTRADOR";
+    private static final String PARTICIPANT = "PARTICIPANTE";
 
     private final JwtProvider jwtProvider;
     private final JsonAuthenticationEntryPoint jsonAuthenticationEntryPoint;
@@ -58,14 +60,9 @@ public class SecurityConfiguration {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
-                        .pathMatchers("/api/v1/traceability/create")
-                        .hasAnyRole(RoleNames.CLIENT, RoleNames.EMPLOYEE)
-                        .pathMatchers("/api/v1/traceability/list")
-                        .hasRole(RoleNames.CLIENT)
-                        .pathMatchers("/api/v1/traceability/orders-efficiency")
-                        .hasRole(RoleNames.OWNER)
-                        .pathMatchers("/api/v1/traceability/employees-ranking")
-                        .hasRole(RoleNames.OWNER)
+                        .pathMatchers("/api/v1/report/bootcamp-history/create").hasRole(ADMIN)
+                        .pathMatchers("/api/v1/report/bootcamp-history/update/*").hasRole(PARTICIPANT)
+                        .pathMatchers("/api/v1/report/bootcamp-history/list").hasRole(ADMIN)
                         .anyExchange().authenticated()
                 )
                 .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)

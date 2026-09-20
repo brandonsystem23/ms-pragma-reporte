@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
             case VALIDATION_ERROR -> HttpStatus.BAD_REQUEST;
             case INVALID_TOKEN -> HttpStatus.UNAUTHORIZED;
             case ACCESS_DENIED -> HttpStatus.FORBIDDEN;
-            case TRACEABILITY_NOT_FOUND -> HttpStatus.NOT_FOUND;
+            case BOOTCAMP_HISTORY_NOT_FOUND -> HttpStatus.NOT_FOUND;
             case INTERNAL_ERROR -> HttpStatus.INTERNAL_SERVER_ERROR;
         };
     }

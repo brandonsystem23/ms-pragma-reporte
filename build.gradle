@@ -122,15 +122,15 @@ jacocoTestReport {
 	classDirectories.setFrom(
 			files(classDirectories.files.collect {
 				fileTree(dir: it, exclude: [
-						'com/pragma/traceability_service/TraceabilityServiceApplication*',
-						'com/pragma/traceability_service/application/dto/**',
-						'com/pragma/traceability_service/application/mapper/**',
-						'com/pragma/traceability_service/domain/model/**',
-						'com/pragma/traceability_service/infrastructure/out/mongo/document/**',
-						'com/pragma/traceability_service/infrastructure/out/mongo/repository/**',
-						'com/pragma/traceability_service/infrastructure/out/mongo/mapper/**',
-						'com/pragma/traceability_service/infrastructure/out/jwt/mapper/**',
-						'com/pragma/traceability_service/infrastructure/out/jwt/dto/**'
+						'com/pragma/reporte_service/ReporteServiceApplication*',
+						'com/pragma/reporte_service/application/dto/**',
+						'com/pragma/reporte_service/application/mapper/**',
+						'com/pragma/reporte_service/domain/model/**',
+						'com/pragma/reporte_service/infrastructure/out/mongo/document/**',
+						'com/pragma/reporte_service/infrastructure/out/mongo/repository/**',
+						'com/pragma/reporte_service/infrastructure/out/mongo/mapper/**',
+						'com/pragma/reporte_service/infrastructure/out/jwt/mapper/**',
+						'com/pragma/reporte_service/infrastructure/out/jwt/dto/**'
 				])
 			})
 	)
@@ -152,15 +152,15 @@ jacocoTestCoverageVerification {
 	classDirectories.setFrom(
 			files(classDirectories.files.collect {
 				fileTree(dir: it, exclude: [
-						'com/pragma/traceability_service/TraceabilityServiceApplication*',
-						'com/pragma/traceability_service/application/dto/**',
-						'com/pragma/traceability_service/application/mapper/**',
-						'com/pragma/traceability_service/domain/model/**',
-						'com/pragma/traceability_service/infrastructure/out/mongo/document/**',
-						'com/pragma/traceability_service/infrastructure/out/mongo/repository/**',
-						'com/pragma/traceability_service/infrastructure/out/mongo/mapper/**',
-						'com/pragma/traceability_service/infrastructure/out/jwt/mapper/**',
-						'com/pragma/traceability_service/infrastructure/out/jwt/dto/**'
+						'com/pragma/reporte_service/ReporteServiceApplication*',
+						'com/pragma/reporte_service/application/dto/**',
+						'com/pragma/reporte_service/application/mapper/**',
+						'com/pragma/reporte_service/domain/model/**',
+						'com/pragma/reporte_service/infrastructure/out/mongo/document/**',
+						'com/pragma/reporte_service/infrastructure/out/mongo/repository/**',
+						'com/pragma/reporte_service/infrastructure/out/mongo/mapper/**',
+						'com/pragma/reporte_service/infrastructure/out/jwt/mapper/**',
+						'com/pragma/reporte_service/infrastructure/out/jwt/dto/**'
 				])
 			})
 	)

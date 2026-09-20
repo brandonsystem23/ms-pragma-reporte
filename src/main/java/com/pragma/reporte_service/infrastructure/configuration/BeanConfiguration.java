@@ -1,15 +1,13 @@
 package com.pragma.reporte_service.infrastructure.configuration;
 
-import com.pragma.reporte_service.domain.api.ICreateTraceabilityServicePort;
-import com.pragma.reporte_service.domain.api.IGetEmployeeRankingByRestaurantServicePort;
-import com.pragma.reporte_service.domain.api.IGetOrderTimesByRestaurantServicePort;
-import com.pragma.reporte_service.domain.api.IListTraceabilityServicePort;
-import com.pragma.reporte_service.domain.spi.ITraceabilityPersistencePort;
-import com.pragma.reporte_service.domain.usecase.CreateTraceabilityUseCase;
-import com.pragma.reporte_service.domain.usecase.GetEmployeeRankingByRestaurantUseCase;
-import com.pragma.reporte_service.domain.usecase.GetOrderTimesByRestaurantUseCase;
-import com.pragma.reporte_service.domain.usecase.ListTraceabilityUseCase;
-import com.pragma.reporte_service.domain.validation.traceability.CreateTraceabilityDomainValidator;
+import com.pragma.reporte_service.domain.api.ICreateBootcampHistoryServicePort;
+import com.pragma.reporte_service.domain.api.IUpdateBootcampHistoryServicePort;
+import com.pragma.reporte_service.domain.api.IListBootcampHistoryServicePort;
+import com.pragma.reporte_service.domain.spi.IBootcampHistoryPersistencePort;
+import com.pragma.reporte_service.domain.usecase.CreateBootcampHistoryUseCase;
+import com.pragma.reporte_service.domain.usecase.UpdateBootcampHistoryUseCase;
+import com.pragma.reporte_service.domain.usecase.ListBootcampHistoryUseCase;
+import com.pragma.reporte_service.domain.validation.bootcamp.CreateBootcampHistoryDomainValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,36 +15,29 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfiguration {
 
     @Bean
-    public CreateTraceabilityDomainValidator createTraceabilityDomainValidator() {
-        return new CreateTraceabilityDomainValidator();
+    public CreateBootcampHistoryDomainValidator createBootcampHistoryDomainValidator() {
+        return new CreateBootcampHistoryDomainValidator();
     }
 
     @Bean
-    public ICreateTraceabilityServicePort createTraceabilityUseCase(
-            ITraceabilityPersistencePort traceabilityPersistencePort,
-            CreateTraceabilityDomainValidator domainValidator
+    public ICreateBootcampHistoryServicePort createBootcampHistoryUseCase(
+            IBootcampHistoryPersistencePort iBootcampHistoryPersistencePort,
+            CreateBootcampHistoryDomainValidator createBootcampHistoryDomainValidator
     ) {
-        return new CreateTraceabilityUseCase(traceabilityPersistencePort, domainValidator);
+        return new CreateBootcampHistoryUseCase(iBootcampHistoryPersistencePort, createBootcampHistoryDomainValidator);
     }
 
     @Bean
-    public IListTraceabilityServicePort listTraceabilityUseCase(
-            ITraceabilityPersistencePort traceabilityPersistencePort
+    public IUpdateBootcampHistoryServicePort increaseBootcampInscriptionsUseCase(
+            IBootcampHistoryPersistencePort iBootcampHistoryPersistencePort
     ) {
-        return new ListTraceabilityUseCase(traceabilityPersistencePort);
+        return new UpdateBootcampHistoryUseCase(iBootcampHistoryPersistencePort);
     }
 
     @Bean
-    public IGetOrderTimesByRestaurantServicePort getOrderTimesByRestaurantUseCase(
-            ITraceabilityPersistencePort traceabilityPersistencePort
+    public IListBootcampHistoryServicePort listBootcampHistoryUseCase(
+            IBootcampHistoryPersistencePort iBootcampHistoryPersistencePort
     ) {
-        return new GetOrderTimesByRestaurantUseCase(traceabilityPersistencePort);
-    }
-
-    @Bean
-    public IGetEmployeeRankingByRestaurantServicePort getEmployeeRankingByRestaurantUseCase(
-            ITraceabilityPersistencePort traceabilityPersistencePort
-    ) {
-        return new GetEmployeeRankingByRestaurantUseCase(traceabilityPersistencePort);
+        return new ListBootcampHistoryUseCase(iBootcampHistoryPersistencePort);
     }
 }

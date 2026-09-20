@@ -21,7 +21,7 @@ class GlobalExceptionHandlerTest {
     void setUp() {
         globalExceptionHandler = new GlobalExceptionHandler();
         exchange = MockServerWebExchange.from(
-                MockServerHttpRequest.get("/api/v1/traceability/list").build()
+                MockServerHttpRequest.get("/api/v1/report/list").build()
         );
     }
 
@@ -89,8 +89,8 @@ class GlobalExceptionHandlerTest {
     @Test
     void shouldHandleTraceabilityNotFound() {
         DomainException ex = new DomainException(
-                DomainErrorCode.TRACEABILITY_NOT_FOUND,
-                "No se encontraron registros de trazabilidad"
+                DomainErrorCode.BOOTCAMP_HISTORY_NOT_FOUND,
+                "No se encontraron registros de bootcamp history"
         );
 
         ResponseEntity<ErrorResponse> response =
@@ -98,7 +98,7 @@ class GlobalExceptionHandlerTest {
 
         assertEquals(404, response.getStatusCode().value());
         assertEquals(
-                "No se encontraron registros de trazabilidad",
+                "No se encontraron registros de bootcamp history",
                 Objects.requireNonNull(response.getBody()).message()
         );
     }
