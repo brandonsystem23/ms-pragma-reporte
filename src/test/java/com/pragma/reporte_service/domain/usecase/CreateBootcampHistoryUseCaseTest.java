@@ -1,7 +1,9 @@
 package com.pragma.reporte_service.domain.usecase;
 
 import com.pragma.reporte_service.domain.model.BootcampHistory;
+import com.pragma.reporte_service.domain.model.command.CapabilityCommand;
 import com.pragma.reporte_service.domain.model.command.CreateBootcampHistoryCommand;
+import com.pragma.reporte_service.domain.model.command.TechnologyCommand;
 import com.pragma.reporte_service.domain.spi.IBootcampHistoryPersistencePort;
 import com.pragma.reporte_service.domain.validation.bootcamp.CreateBootcampHistoryDomainValidator;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -32,15 +35,21 @@ class CreateBootcampHistoryUseCaseTest {
 
     @Test
     void shouldCreateSuccessfully() {
-
         CreateBootcampHistoryCommand command = new CreateBootcampHistoryCommand(
                 1L,
                 "Bootcamp Java",
                 "Descripcion",
                 LocalDate.now(),
                 30,
-                3L,
-                5L
+                List.of(
+                        new CapabilityCommand(
+                                "Backend",
+                                List.of(
+                                        new TechnologyCommand("Java"),
+                                        new TechnologyCommand("Spring")
+                                )
+                        )
+                )
         );
 
         BootcampHistory saved = BootcampHistory.builder()
@@ -48,14 +57,11 @@ class CreateBootcampHistoryUseCaseTest {
                 .bootcampId(1L)
                 .name("Bootcamp Java")
                 .description("Descripcion")
-                .launchDate(LocalDate.now())
+                .launchDate(command.launchDate())
                 .durationDay(30)
-                .capacityCount(3L)
-                .technologyCount(5L)
-                .numberInscriptions(0L)
                 .build();
 
-        doNothing().when(validator).validate(any());
+        doNothing().when(validator).validateBootcampHistoryCommand(any());
         when(persistencePort.save(any())).thenReturn(Mono.just(saved));
 
         StepVerifier.create(useCase.create(command))

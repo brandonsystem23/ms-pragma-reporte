@@ -1,0 +1,15 @@
+package com.pragma.reporte_service.domain.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ParticipantItem {
+    private String fullName;
+    private String email;
+}

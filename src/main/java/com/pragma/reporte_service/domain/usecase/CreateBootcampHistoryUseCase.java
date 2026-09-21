@@ -19,7 +19,7 @@ public class CreateBootcampHistoryUseCase implements ICreateBootcampHistoryServi
     public Mono<BootcampHistory> create(CreateBootcampHistoryCommand command) {
         return Mono.defer(() -> {
 
-            validator.validate(command);
+            validator.validateBootcampHistoryCommand(command);
 
             BootcampHistory bootcampHistory = BootcampHistoryBuilder.buildBootcampHistory(command);
 

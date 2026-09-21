@@ -33,7 +33,6 @@ class BootcampHistoryPersistenceAdapterTest {
 
     @Test
     void shouldSaveSuccessfully() {
-
         BootcampHistory domain = BootcampHistory.builder()
                 .id("abc123")
                 .bootcampId(1L)
@@ -41,8 +40,6 @@ class BootcampHistoryPersistenceAdapterTest {
                 .description("Descripcion")
                 .launchDate(LocalDate.now())
                 .durationDay(30)
-                .capacityCount(3L)
-                .technologyCount(5L)
                 .numberInscriptions(0L)
                 .build();
 
@@ -51,11 +48,8 @@ class BootcampHistoryPersistenceAdapterTest {
                 .bootcampId(1L)
                 .name("Bootcamp Java")
                 .description("Descripcion")
-                .launchDate(LocalDate.now())
+                .launchDate(domain.getLaunchDate())
                 .durationDay(30)
-                .capacityCount(3L)
-                .technologyCount(5L)
-                .numberInscriptions(0L)
                 .build();
 
         when(mapper.toDocument(any())).thenReturn(document);
@@ -69,7 +63,6 @@ class BootcampHistoryPersistenceAdapterTest {
 
     @Test
     void shouldFindAllSuccessfully() {
-
         BootcampHistory domain = BootcampHistory.builder()
                 .id("abc123")
                 .bootcampId(1L)
@@ -77,8 +70,6 @@ class BootcampHistoryPersistenceAdapterTest {
                 .description("Descripcion")
                 .launchDate(LocalDate.now())
                 .durationDay(30)
-                .capacityCount(3L)
-                .technologyCount(5L)
                 .numberInscriptions(0L)
                 .build();
 
@@ -87,11 +78,8 @@ class BootcampHistoryPersistenceAdapterTest {
                 .bootcampId(1L)
                 .name("Bootcamp Java")
                 .description("Descripcion")
-                .launchDate(LocalDate.now())
+                .launchDate(domain.getLaunchDate())
                 .durationDay(30)
-                .capacityCount(3L)
-                .technologyCount(5L)
-                .numberInscriptions(0L)
                 .build();
 
         when(repository.findAll()).thenReturn(Flux.just(document));
@@ -104,7 +92,6 @@ class BootcampHistoryPersistenceAdapterTest {
 
     @Test
     void shouldFindByBootcampIdSuccessfully() {
-
         BootcampHistory domain = BootcampHistory.builder()
                 .id("abc123")
                 .bootcampId(1L)
@@ -112,8 +99,6 @@ class BootcampHistoryPersistenceAdapterTest {
                 .description("Descripcion")
                 .launchDate(LocalDate.now())
                 .durationDay(30)
-                .capacityCount(3L)
-                .technologyCount(5L)
                 .numberInscriptions(0L)
                 .build();
 
@@ -122,11 +107,8 @@ class BootcampHistoryPersistenceAdapterTest {
                 .bootcampId(1L)
                 .name("Bootcamp Java")
                 .description("Descripcion")
-                .launchDate(LocalDate.now())
+                .launchDate(domain.getLaunchDate())
                 .durationDay(30)
-                .capacityCount(3L)
-                .technologyCount(5L)
-                .numberInscriptions(0L)
                 .build();
 
         when(repository.findByBootcampId(1L)).thenReturn(Mono.just(document));
@@ -143,7 +125,6 @@ class BootcampHistoryPersistenceAdapterTest {
 
     @Test
     void shouldUpdateSuccessfully() {
-
         BootcampHistory domain = BootcampHistory.builder()
                 .id("abc123")
                 .bootcampId(1L)
@@ -151,8 +132,6 @@ class BootcampHistoryPersistenceAdapterTest {
                 .description("Descripcion")
                 .launchDate(LocalDate.now())
                 .durationDay(30)
-                .capacityCount(3L)
-                .technologyCount(5L)
                 .numberInscriptions(1L)
                 .build();
 
@@ -161,11 +140,8 @@ class BootcampHistoryPersistenceAdapterTest {
                 .bootcampId(1L)
                 .name("Bootcamp Java")
                 .description("Descripcion")
-                .launchDate(LocalDate.now())
+                .launchDate(domain.getLaunchDate())
                 .durationDay(30)
-                .capacityCount(3L)
-                .technologyCount(5L)
-                .numberInscriptions(1L)
                 .build();
 
         when(mapper.toDocument(any())).thenReturn(document);
@@ -176,6 +152,32 @@ class BootcampHistoryPersistenceAdapterTest {
                 .assertNext(result -> {
                     Assertions.assertEquals(1L, result.getBootcampId());
                     Assertions.assertEquals(1L, result.getNumberInscriptions());
+                })
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldFindTopBootcampSuccessfully() {
+        BootcampHistory domain = BootcampHistory.builder()
+                .id("top123")
+                .bootcampId(10L)
+                .name("Top Bootcamp")
+                .numberInscriptions(5L)
+                .build();
+
+        BootcampHistoryDocument document = BootcampHistoryDocument.builder()
+                .id("top123")
+                .bootcampId(10L)
+                .name("Top Bootcamp")
+                .build();
+
+        when(repository.findBootcampWithMostParticipants()).thenReturn(Mono.just(document));
+        when(mapper.toDomain(any())).thenReturn(domain);
+
+        StepVerifier.create(adapter.findBootcampWithMostParticipants())
+                .assertNext(result -> {
+                    Assertions.assertEquals(10L, result.getBootcampId());
+                    Assertions.assertEquals("Top Bootcamp", result.getName());
                 })
                 .verifyComplete();
     }

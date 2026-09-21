@@ -45,4 +45,12 @@ public class BootcampHistoryPersistenceAdapter implements IBootcampHistoryPersis
         return bootcampHistoryRepository.save(bootcampHistoryDocumentMapper.toDocument(bootcampHistory))
                 .map(bootcampHistoryDocumentMapper::toDomain);
     }
+
+    @Override
+    public Mono<BootcampHistory> findBootcampWithMostParticipants() {
+        log.info("Listando bootcamps con mas participantes inscritos");
+        return bootcampHistoryRepository.findBootcampWithMostParticipants()
+                .map(bootcampHistoryDocumentMapper::toDomain);
+    }
+
 }

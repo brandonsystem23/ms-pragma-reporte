@@ -1,6 +1,8 @@
 package com.pragma.reporte_service.infrastructure.input.rest;
 
 import com.pragma.reporte_service.application.dto.request.CreateBootcampHistoryRequest;
+import com.pragma.reporte_service.application.dto.request.UpdateBootcampHistoryRequest;
+import com.pragma.reporte_service.application.dto.response.BootcampHistoryLogResponse;
 import com.pragma.reporte_service.application.dto.response.BootcampHistoryResponse;
 import com.pragma.reporte_service.application.handler.IBootcampHistoryHandler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,20 +35,28 @@ public class BootcampReportController {
 
     @PatchMapping("/bootcamp-history/update/{bootcampId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Incrementar contador de inscritos en bootcamp history. Requiere rol PARTICIPANTE")
+    @Operation(summary = "Agregar participante suscrito en bootcamp history. Requiere rol PARTICIPANTE")
     public Mono<BootcampHistoryResponse> increaseInscriptions(
-            @PathVariable Long bootcampId
+            @PathVariable Long bootcampId,
+            @RequestBody UpdateBootcampHistoryRequest request
     ) {
-        log.info("Peticion para incrementar inscripciones del bootcampId={}", bootcampId);
-        return iBootcampHistoryHandler.update(bootcampId);
+        log.info("Peticion para agregar participante al bootcampId={}", bootcampId);
+        return iBootcampHistoryHandler.update(bootcampId, request);
     }
 
     @GetMapping("/bootcamp-history/list")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Listar historial de bootcamps. Requiere rol ADMINISTRADOR")
-    public Flux<BootcampHistoryResponse> listAll(
-    ) {
+    public Flux<BootcampHistoryLogResponse> listAll() {
         log.info("Peticion para listar historial de bootcamps");
         return iBootcampHistoryHandler.listAll();
+    }
+
+    @GetMapping("/bootcamp-history/top")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Listar bootcamp top con mayor cantidad de inscritos. Requiere rol ADMINISTRADOR")
+    public Mono<BootcampHistoryResponse> findTopBootcamp() {
+        log.info("Peticion para buscar bootcamp top con mayor cantidad de inscritos");
+        return iBootcampHistoryHandler.findTopBootcamp();
     }
 }

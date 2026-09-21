@@ -63,6 +63,7 @@ public class SecurityConfiguration {
                         .pathMatchers("/api/v1/report/bootcamp-history/create").hasRole(ADMIN)
                         .pathMatchers("/api/v1/report/bootcamp-history/update/*").hasRole(PARTICIPANT)
                         .pathMatchers("/api/v1/report/bootcamp-history/list").hasRole(ADMIN)
+                        .pathMatchers("/api/v1/report/bootcamp-history/top").hasRole(ADMIN)
                         .anyExchange().authenticated()
                 )
                 .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
