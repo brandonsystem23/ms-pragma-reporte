@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,8 +24,6 @@ public class BootcampHistoryDocument {
     private String description;
     private LocalDate launchDate;
     private Integer durationDay;
-    private Long capacityCount;
-    private Long technologyCount;
-    private Long numberInscriptions;
-
+    private List<CapabilityDocument> capabilities;
+    private List<ParticipantDocument> participants;
 }

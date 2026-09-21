@@ -1,10 +1,13 @@
 package com.pragma.reporte_service.domain.validation.bootcamp;
 
 import com.pragma.reporte_service.domain.exception.DomainException;
+import com.pragma.reporte_service.domain.model.command.CapabilityCommand;
 import com.pragma.reporte_service.domain.model.command.CreateBootcampHistoryCommand;
+import com.pragma.reporte_service.domain.model.command.TechnologyCommand;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,6 +17,18 @@ class CreateBootcampHistoryDomainValidatorTest {
     private final CreateBootcampHistoryDomainValidator validator =
             new CreateBootcampHistoryDomainValidator();
 
+    private List<CapabilityCommand> validCapabilities() {
+        return List.of(
+                new CapabilityCommand(
+                        "Backend",
+                        List.of(
+                                new TechnologyCommand("Java"),
+                                new TechnologyCommand("Spring")
+                        )
+                )
+        );
+    }
+
     @Test
     void shouldValidateSuccessfully() {
         CreateBootcampHistoryCommand command = new CreateBootcampHistoryCommand(
@@ -22,11 +37,10 @@ class CreateBootcampHistoryDomainValidatorTest {
                 "Descripcion",
                 LocalDate.now(),
                 30,
-                3L,
-                5L
+                validCapabilities()
         );
 
-        assertDoesNotThrow(() -> validator.validate(command));
+        assertDoesNotThrow(() -> validator.validateBootcampHistoryCommand(command));
     }
 
     @Test
@@ -37,11 +51,10 @@ class CreateBootcampHistoryDomainValidatorTest {
                 "Descripcion",
                 LocalDate.now(),
                 30,
-                3L,
-                5L
+                validCapabilities()
         );
 
-        assertThrows(DomainException.class, () -> validator.validate(command));
+        assertThrows(DomainException.class, () -> validator.validateBootcampHistoryCommand(command));
     }
 
     @Test
@@ -52,11 +65,10 @@ class CreateBootcampHistoryDomainValidatorTest {
                 "Descripcion",
                 LocalDate.now(),
                 30,
-                3L,
-                5L
+                validCapabilities()
         );
 
-        assertThrows(DomainException.class, () -> validator.validate(command));
+        assertThrows(DomainException.class, () -> validator.validateBootcampHistoryCommand(command));
     }
 
     @Test
@@ -67,11 +79,10 @@ class CreateBootcampHistoryDomainValidatorTest {
                 "",
                 LocalDate.now(),
                 30,
-                3L,
-                5L
+                validCapabilities()
         );
 
-        assertThrows(DomainException.class, () -> validator.validate(command));
+        assertThrows(DomainException.class, () -> validator.validateBootcampHistoryCommand(command));
     }
 
     @Test
@@ -82,11 +93,10 @@ class CreateBootcampHistoryDomainValidatorTest {
                 "Descripcion",
                 null,
                 30,
-                3L,
-                5L
+                validCapabilities()
         );
 
-        assertThrows(DomainException.class, () -> validator.validate(command));
+        assertThrows(DomainException.class, () -> validator.validateBootcampHistoryCommand(command));
     }
 
     @Test
@@ -97,11 +107,10 @@ class CreateBootcampHistoryDomainValidatorTest {
                 "Descripcion",
                 LocalDate.now(),
                 null,
-                3L,
-                5L
+                validCapabilities()
         );
 
-        assertThrows(DomainException.class, () -> validator.validate(command));
+        assertThrows(DomainException.class, () -> validator.validateBootcampHistoryCommand(command));
     }
 
     @Test
@@ -112,70 +121,94 @@ class CreateBootcampHistoryDomainValidatorTest {
                 "Descripcion",
                 LocalDate.now(),
                 0,
-                3L,
-                5L
+                validCapabilities()
         );
 
-        assertThrows(DomainException.class, () -> validator.validate(command));
+        assertThrows(DomainException.class, () -> validator.validateBootcampHistoryCommand(command));
     }
 
     @Test
-    void shouldFailWhenCapacityCountIsNull() {
+    void shouldFailWhenCapabilitiesAreNull() {
         CreateBootcampHistoryCommand command = new CreateBootcampHistoryCommand(
                 1L,
                 "Bootcamp Java",
                 "Descripcion",
                 LocalDate.now(),
                 30,
-                null,
-                5L
-        );
-
-        assertThrows(DomainException.class, () -> validator.validate(command));
-    }
-
-    @Test
-    void shouldFailWhenCapacityCountIsInvalid() {
-        CreateBootcampHistoryCommand command = new CreateBootcampHistoryCommand(
-                1L,
-                "Bootcamp Java",
-                "Descripcion",
-                LocalDate.now(),
-                30,
-                -1L,
-                5L
-        );
-
-        assertThrows(DomainException.class, () -> validator.validate(command));
-    }
-
-    @Test
-    void shouldFailWhenTechnologyCountIsNull() {
-        CreateBootcampHistoryCommand command = new CreateBootcampHistoryCommand(
-                1L,
-                "Bootcamp Java",
-                "Descripcion",
-                LocalDate.now(),
-                30,
-                3L,
                 null
         );
 
-        assertThrows(DomainException.class, () -> validator.validate(command));
+        assertThrows(DomainException.class, () -> validator.validateBootcampHistoryCommand(command));
     }
 
     @Test
-    void shouldFailWhenTechnologyCountIsInvalid() {
+    void shouldFailWhenCapabilitiesAreEmpty() {
         CreateBootcampHistoryCommand command = new CreateBootcampHistoryCommand(
                 1L,
                 "Bootcamp Java",
                 "Descripcion",
                 LocalDate.now(),
                 30,
-                3L,
-                -1L
+                List.of()
         );
 
-        assertThrows(DomainException.class, () -> validator.validate(command));
+        assertThrows(DomainException.class, () -> validator.validateBootcampHistoryCommand(command));
+    }
+
+    @Test
+    void shouldFailWhenCapabilityNameIsBlank() {
+        CreateBootcampHistoryCommand command = new CreateBootcampHistoryCommand(
+                1L,
+                "Bootcamp Java",
+                "Descripcion",
+                LocalDate.now(),
+                30,
+                List.of(
+                        new CapabilityCommand(
+                                "",
+                                List.of(new TechnologyCommand("Java"))
+                        )
+                )
+        );
+
+        assertThrows(DomainException.class, () -> validator.validateBootcampHistoryCommand(command));
+    }
+
+    @Test
+    void shouldFailWhenTechnologiesAreEmpty() {
+        CreateBootcampHistoryCommand command = new CreateBootcampHistoryCommand(
+                1L,
+                "Bootcamp Java",
+                "Descripcion",
+                LocalDate.now(),
+                30,
+                List.of(
+                        new CapabilityCommand(
+                                "Backend",
+                                List.of()
+                        )
+                )
+        );
+
+        assertThrows(DomainException.class, () -> validator.validateBootcampHistoryCommand(command));
+    }
+
+    @Test
+    void shouldFailWhenTechnologyNameIsBlank() {
+        CreateBootcampHistoryCommand command = new CreateBootcampHistoryCommand(
+                1L,
+                "Bootcamp Java",
+                "Descripcion",
+                LocalDate.now(),
+                30,
+                List.of(
+                        new CapabilityCommand(
+                                "Backend",
+                                List.of(new TechnologyCommand(""))
+                        )
+                )
+        );
+
+        assertThrows(DomainException.class, () -> validator.validateBootcampHistoryCommand(command));
     }
 }

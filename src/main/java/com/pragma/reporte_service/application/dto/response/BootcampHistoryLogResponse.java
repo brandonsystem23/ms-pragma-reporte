@@ -3,17 +3,17 @@ package com.pragma.reporte_service.application.dto.response;
 import lombok.Builder;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Builder
-public record BootcampHistoryResponse(
+public record BootcampHistoryLogResponse(
         String id,
         Long bootcampId,
         String name,
         String description,
         LocalDate launchDate,
         Integer durationDay,
-        List<CapabilityResponse> capabilities,
-        List<ParticipantResponse> participants
+        Long capacityCount,
+        Long technologyCount,
+        Long numberInscriptions
 ) {
 }

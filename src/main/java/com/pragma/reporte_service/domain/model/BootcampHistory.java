@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -21,4 +22,6 @@ public class BootcampHistory {
     private Long capacityCount;
     private Long technologyCount;
     private Long numberInscriptions;
+    private List<CapabilityItem> capabilities;
+    private List<ParticipantItem> participants;
 }

@@ -13,4 +13,7 @@ public interface IBootcampHistoryPersistencePort {
     Flux<BootcampHistory> findAll();
 
     Mono<BootcampHistory> update(BootcampHistory bootcampHistory);
+
+    Mono<BootcampHistory> findBootcampWithMostParticipants();
+
 }
